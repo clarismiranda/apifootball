@@ -11,7 +11,7 @@ api_host = os.getenv('AF_HOST')
 
 cl = Client(api_key, api_host)
 # Creates the client to the api with a country and season
-af_cl = APIFootball(cl,'ES','2019')
+af_cl = APIFootball(cl,'GB','2019')
 # Gets league from an specific client country
 lst, _ = af_cl.get_league()
 
