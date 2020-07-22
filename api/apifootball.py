@@ -186,12 +186,15 @@ class APIFootball:
 		
 		# Dictionary of teams with rank
 		dct = {}
-		for team in standings["response"][0]["league"]["standings"][0]:
-			id_t = str(team["team"]["id"])
-			t = football.Team(id_t, team["team"]["name"])
-			stand = football.Standings(t, team["rank"], team["points"], 
-					team["goalsDiff"], team["form"], team["description"])
-			dct[id_t] = stand
+		for conf in standings["response"][0]["league"]["standings"]:
+			for team in conf:
+				id_t = str(team["team"]["id"])
+				t = football.Team(id_t, team["team"]["name"])
+				stand = football.Standings(t, team["rank"], team["points"], 
+						team["goalsDiff"], team["form"], team["description"])
+				if team["group"] != None:
+					stand.group = team["group"]
+				dct[id_t] = stand
 
 		return dct, standings["response"][0]
 

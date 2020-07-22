@@ -158,13 +158,14 @@ class Standings:
 		stats_away: a stats object from away matches
 	"""
 	def __init__(self, team=None, rank=0, points=0, goals_diff=0, form="", description="",
-				 stats_home=None, stats_away=None):
+				 group="", stats_home=None, stats_away=None):
 		self.team = team
 		self.rank = rank
 		self.points = points
 		self.goals_diff = goals_diff
 		self.form = form
 		self.description = description
+		self.group = group
 		self.stats_home = stats_home
 		self.stats_away = stats_away
 
