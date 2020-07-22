@@ -16,7 +16,7 @@ if len(sys.argv) > 3:
 else:
     print("Wrong arguments were given, expected: --league --season")
 
-dirName = os.getenv('DIR_NAME')
+dirName = os.getenv('DIR_NAME') + country
 # Teams file
 teams_json = dirName + '/teams.json'
 
