@@ -83,9 +83,11 @@ for k, v in dct_teams.items():
 		team.stats_home = home_stats
 		team.stats_away = away_stats
 		# Save finish standings into a json  
-		json_object = json.dumps(team, indent = 4, cls=CustomEncoder)  
+		json_object = json.dumps(team, indent = 4, cls=CustomEncoder)
+		# Games play
+		week = home_stats.played + away_stats.played
 		# Saving into file
-		file = temp + '/' + team_id + ".json"
+		file = temp + '/' + team_id + '_' + str(week) + ".json"
 		with open(file, "w") as outfile: 
 			outfile.write(json_object)
 		temp = dirName
