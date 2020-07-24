@@ -44,6 +44,7 @@ with open(teams_json) as json_file:
 
 for k, v in matches.items():
 	match_id = str(k)
+	week = v.week
 	home_team = str(v.team_home.id)
 	away_team = str(v.team_away.id)
 	if home_team in dct_teams and away_team in dct_teams:
@@ -65,8 +66,8 @@ for k, v in matches.items():
 		# Save finish standings into a json  
 		json_object = json.dumps(match, indent = 4, cls=CustomEncoder)
 		# Saving into file
-		file_home = temp_home + '/' + match_id + ".json"
-		file_away = temp_away + '/' + match_id + ".json"
+		file_home = temp_home + '/' + match_id + "_" + week + ".json"
+		file_away = temp_away + '/' + match_id + "_" + week + ".json"
 		with open(file_home, "w") as outfile: 
 			outfile.write(json_object)
 		with open(file_away, "w") as outfile: 

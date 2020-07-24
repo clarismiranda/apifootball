@@ -237,11 +237,12 @@ class APIFootball:
 		dct = {}
 		for match in fixtures["response"]:
 			id_f = match["fixture"]["id"]
+			week = match["league"]["round"].strip("Regular Season - ")
 			team = match["teams"]
 			team_home = football.Team(team["home"]["id"], team["home"]["name"])
 			team_away = football.Team(team["away"]["id"], team["away"]["name"])
 			goals = match["goals"]
-			dct[id_f] = football.Fixture(team_home, team_away, goals["home"], goals["away"])
+			dct[id_f] = football.Fixture(id_f, week, team_home, team_away, goals["home"], goals["away"])
 		return dct, fixtures["response"]
 
 	"""
