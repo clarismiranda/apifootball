@@ -30,6 +30,7 @@ api_host = os.getenv('AF_HOST')
 cl = Client(api_key, api_host)
 # Creates the client to the api with a country and season
 af_cl = APIFootball(cl, country, season)
+
 # Retrieving all matches in the league
 matches, _ = af_cl.get_fixtures(league)
 
@@ -62,7 +63,7 @@ for k, v in matches.items():
 				"away_id" : away_team
 			}
 		# Save finish standings into a json  
-		json_object = json.dumps(match, indent = 4, cls=CustomEncoder)  
+		json_object = json.dumps(match, indent = 4, cls=CustomEncoder)
 		# Saving into file
 		file_home = temp_home + '/' + match_id + ".json"
 		file_away = temp_away + '/' + match_id + ".json"
