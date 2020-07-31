@@ -13,8 +13,10 @@ if len(sys.argv) > 3:
 	country = sys.argv[1]
 	league = sys.argv[2]
 	season = sys.argv[3]
+	start = sys.argv[4]
+	end = sys.argv[5]
 else:
-    print("Wrong arguments were given, expected: --league --season")
+    print("Wrong arguments were given, expected: --country --league --season --start --end")
 
 dirName = os.getenv('DIR_NAME') + country
 # Teams file
@@ -32,7 +34,7 @@ cl = Client(api_key, api_host)
 af_cl = APIFootball(cl, country, season)
 
 # Retrieving all matches in the league
-matches, _ = af_cl.get_fixtures(league)
+matches, _ = af_cl.get_fixtures(league, frm=start, to=end)
 
 # Future matches dictionary
 dct_future = {}
