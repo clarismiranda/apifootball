@@ -47,6 +47,7 @@ with open(teams_json) as json_file:
 for k, v in matches.items():
 	match_id = str(k)
 	week = v.week
+	week = ''.join(filter(str.isdigit, week))
 	home_team = str(v.team_home.id)
 	away_team = str(v.team_away.id)
 	if home_team in dct_teams and away_team in dct_teams:
