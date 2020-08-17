@@ -238,6 +238,7 @@ class StatsFixture:
 class Fixture:
 	"""
 		id: the fixture id
+		season: the season it belongs
 		week: the match week
 		team_home: a team object representing home team
 		team_away: a team object representing away team
@@ -246,9 +247,10 @@ class Fixture:
 		stats_home: a StatsFixture object about home team statistics
 		stats_away: a StatsFixture object about away team statistics
 	"""
-	def __init__(self, id_fixture, week, team_home, team_away, goals_home=0, goals_away=0,
+	def __init__(self, id_fixture, season, week, team_home, team_away, goals_home=0, goals_away=0,
 					stats_home=None, stats_away=None):
 		self.id = id_fixture
+		self.season = season
 		self.week = week
 		self.team_home = team_home
 		self.team_away = team_away

@@ -13,8 +13,10 @@ if len(sys.argv) > 3:
     country = sys.argv[1]
     league = sys.argv[2]
     season = sys.argv[3]
+    start = sys.argv[4]
+    end = sys.argv[5]
 else:
-    print("Wrong arguments were given, expected: --country --league --season")
+    print("Wrong arguments were given, expected: --country --league --season --start --end")
 
 # Retrieve key and host from terminal
 api_key = os.getenv('AF_KEY')
@@ -29,7 +31,7 @@ af_cl = APIFootball(cl, country, season)
 # Getting today's date
 today = str(date.today())
 # Retrieving all matches in the league
-matches, _ = af_cl.get_fixtures(league, frm='2020-07-24', to='2020-08-03')
+matches, _ = af_cl.get_fixtures(league, frm=start, to=end)
 
 # Output array of pair of teams in future matches
 future_teams = []

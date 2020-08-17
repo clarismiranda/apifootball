@@ -12,7 +12,7 @@ class APIFootball:
 		season: the YYYY of the season league
 	"""
 	
-	def __init__(self, Client, country, season=None, league=None):
+	def __init__(self, Client, country=None, season=None, league=None):
 		self.Client = Client
 		self.country = country
 		self.season = self._get_season(season)
@@ -100,10 +100,14 @@ class APIFootball:
 		to: the YYYY-MM-DD to limit date
 		Returns stats when home, stats when away
 	"""
-	def get_teams_stats(self, team, league, season=None, to=None):
+	def get_teams_stats(self, season, team=None, league=None, to=None):
 		if season == None:
 			season = self.season
-		endpoint = "/teams/statistics?league=" + league + "&season=" + season + "&team=" + team
+		endpoint = "/teams/statistics?season=" + season
+		if team != None:
+			endpoint = endpoint + "&team=" + team
+		if league != None:
+			endpoint = endpoint + "&league=" + league
 		if to != None:
 			endpoint = endpoint + "&to=" + to
 		# Request to the API
@@ -177,7 +181,9 @@ class APIFootball:
 		if season == None:
 			season = self.season
 		# Uses the default client season if not changed
-		endpoint = "/standings?league=" + league + "&season=" + season
+		endpoint = "/standings?season=" + season
+		if league != None:
+			endpoint = endpoint + "&league=" + league
 		# Request to the API
 		self.Client.conn.request("GET", endpoint, headers=self.Client.headers)
 		res = self.Client.conn.getresponse()
@@ -242,8 +248,61 @@ class APIFootball:
 			team_home = football.Team(team["home"]["id"], team["home"]["name"])
 			team_away = football.Team(team["away"]["id"], team["away"]["name"])
 			goals = match["goals"]
-			dct[id_f] = football.Fixture(id_f, week, team_home, team_away, goals["home"], goals["away"])
+			dct[id_f] = football.Fixture(id_f, season, week, team_home, team_away, goals["home"], goals["away"])
 		return dct, fixtures["response"]
+
+	"""
+		Public method for getting the matches between two teams
+		team_id_a: the id of team a
+		team_id_b: the id of team b
+		league: the id of a league
+		season: the YYYY format of the season to search
+		team: the id of a team
+		last: the last N fixtures
+		nxt: the next N fixtures
+		date: the exact date as YYYY-MM-DD
+		frm: starting date as YYYY-MM-DD
+		to: ending date as YYYY-MM-DD
+		Returns the ids, name of the team and against team and its fixtures
+	"""
+	def get_h2h(self, team_id_a, team_id_b, league=None, season=None, last=None,
+				nxt=None, date=None, frm=None, to=None):
+		# Uses the default client season if not changed
+		endpoint = "/fixtures/headtohead?h2h=" + team_id_a + '-' + team_id_b
+		if league != None:
+			endpoint = endpoint + "&league=" + season
+		if season != None:
+			endpoint = endpoint + "&season=" + season
+		if team != None:
+			endpoint = endpoint + "&team=" + team
+		if date != None:
+			endpoint = endpoint + "&date=" + date
+		if last != None:
+			endpoint = endpoint + "&last=" + last
+		if nxt != None:
+			endpoint = endpoint + "&next=" + nxt
+		if frm != None:
+			endpoint = endpoint + "&from=" + frm
+		if to != None:
+			endpoint = endpoint + "&to=" + to
+		# Request to the API
+		self.Client.conn.request("GET", endpoint, headers=self.Client.headers)
+		res = self.Client.conn.getresponse()
+		data = res.read()
+		fixtures = json.loads(data)
+		# List of id_fixtrure: id_home, id_against, name_home, name_against
+		dct = {}
+		for match in fixtures["response"]:
+			id_f = match["fixture"]["id"]
+			season = match["league"]["season"]
+			week = match["league"]["round"].strip("Regular Season - ")
+			team = match["teams"]
+			team_home = football.Team(team["home"]["id"], team["home"]["name"])
+			team_away = football.Team(team["away"]["id"], team["away"]["name"])
+			goals = match["goals"]
+			dct[id_f] = football.Fixture(id_f, season, week, team_home, team_away, goals["home"], goals["away"])
+		return dct, fixtures["response"]
+
 
 	"""
 		Public method for getting the statistics in a given fixture

@@ -75,7 +75,7 @@ for k, v in dct_teams.items():
 	# Saves current standings if the league is principal
 	if main == 'true':
 		# Retrieving stats from team with key
-		home_stats, away_stats = af_cl.get_teams_stats(team_id, league)
+		home_stats, away_stats = af_cl.get_teams_stats(team=team_id, league=league, season='2020')
 		# Retrieving current standings from a league
 		standings, _ = af_cl.get_standings(league)
 		# Update team standings
