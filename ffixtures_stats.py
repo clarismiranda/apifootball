@@ -19,11 +19,12 @@ else:
     print("Wrong arguments were given, expected: --country --league --season --start --end")
 
 dirName = os.getenv('DIR_NAME') + country
-# Teams file
-teams_json = dirName + '/teams.json'
 
 # Saving directory
 dirName = dirName + '/' + league + '/' + season
+
+# Teams file
+teams_json = dirName + '/teams.json'
 
 # Retrieve key and host from terminal
 api_key = os.getenv('AF_KEY')

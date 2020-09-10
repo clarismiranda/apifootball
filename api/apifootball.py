@@ -329,8 +329,10 @@ class APIFootball:
 			# Keys for stats
 			stats = football.StatsFixture()
 			lst_keys = stats.ks
-			# Setting stats
-			self._set_to_object(lst_stats, lst_keys, stats)
+			# This is due to treat non-uniform data from the API
+			if len(lst_keys) == len(lst_stats):
+				# Setting stats
+				self._set_to_object(lst_stats, lst_keys, stats)
 			dct[id_t] = stats
 		return dct, statistics["response"]
 

@@ -17,12 +17,13 @@ if len(sys.argv) > 3:
 else:
     print("Wrong arguments were given, expected: --country --league --season --main")
 
-dirName = os.getenv('DIR_NAME') + country
-# Teams file
-teams_json = dirName + '/teams.json'
+dirName = os.getenv('DIR_NAME') + country 
 
 # Saving directory
 dirName = dirName + '/' + league + '/' + season
+
+# Teams file
+teams_json = dirName + '/teams.json'
 
 # Teams dictionary
 dct_teams = None
@@ -75,7 +76,7 @@ for k, v in dct_teams.items():
 	# Saves current standings if the league is principal
 	if main == 'true':
 		# Retrieving stats from team with key
-		home_stats, away_stats = af_cl.get_teams_stats(team=team_id, league=league, season='2020')
+		home_stats, away_stats = af_cl.get_teams_stats(team=team_id, league=league, season=season)
 		# Retrieving current standings from a league
 		standings, _ = af_cl.get_standings(league)
 		# Update team standings
