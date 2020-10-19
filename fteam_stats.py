@@ -47,6 +47,9 @@ elif main == 'false':
 	with open(teams_json) as json_file:
 		dct_teams = json.load(json_file) 
 
+# Retrieving current standings from a league
+standings, _ = af_cl.get_standings(league)
+
 # When is not a main league, just create the folders 
 for k, v in dct_teams.items():
 	team_id = str(k)
@@ -77,10 +80,12 @@ for k, v in dct_teams.items():
 	if main == 'true':
 		# Retrieving stats from team with key
 		home_stats, away_stats = af_cl.get_teams_stats(team=team_id, league=league, season=season)
-		# Retrieving current standings from a league
-		standings, _ = af_cl.get_standings(league)
 		# Update team standings
-		team = standings[team_id]
+		try:
+			team = standings[team_id]
+		except:
+			team = standings['13495']
+			print("Some error from the API")
 		team.stats_home = home_stats
 		team.stats_away = away_stats
 		# Save finish standings into a json  
