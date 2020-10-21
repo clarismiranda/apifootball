@@ -8,7 +8,7 @@ import json
 import os
 import sys
 
-if len(sys.argv) > 3:
+if len(sys.argv) > 5:
 	# Setting country, league and season from system arguments
     country = sys.argv[1]
     league = sys.argv[2]

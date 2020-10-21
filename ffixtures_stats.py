@@ -8,7 +8,7 @@ import json
 import os
 import sys
 
-if len(sys.argv) > 3:
+if len(sys.argv) > 5:
 	# Setting league and season from system arguments
 	country = sys.argv[1]
 	league = sys.argv[2]
@@ -18,6 +18,10 @@ if len(sys.argv) > 3:
 else:
     print("Wrong arguments were given, expected: --country --league --season --start --end")
 
+# Retrieve key and host from terminal
+api_key = os.getenv('AF_KEY')
+api_host = os.getenv('AF_HOST')
+
 dirName = os.getenv('DIR_NAME') + country
 
 # Saving directory
@@ -25,10 +29,6 @@ dirName = dirName + '/' + league + '/' + season
 
 # Teams file
 teams_json = dirName + '/teams.json'
-
-# Retrieve key and host from terminal
-api_key = os.getenv('AF_KEY')
-api_host = os.getenv('AF_HOST')
 
 cl = Client(api_key, api_host)
 # Creates the client to the api with a country and season

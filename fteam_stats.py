@@ -7,7 +7,7 @@ import json
 import os
 import sys
 
-if len(sys.argv) > 3:
+if len(sys.argv) > 4:
 	# Setting country, league and season from system arguments
 	# Main is a boolean to represent this league as principal
     country = sys.argv[1]
@@ -16,6 +16,10 @@ if len(sys.argv) > 3:
     main = sys.argv[4]
 else:
     print("Wrong arguments were given, expected: --country --league --season --main")
+
+# Retrieve key and host from terminal
+api_key = os.getenv('AF_KEY')
+api_host = os.getenv('AF_HOST')
 
 dirName = os.getenv('DIR_NAME') + country 
 
@@ -27,10 +31,6 @@ teams_json = dirName + '/teams.json'
 
 # Teams dictionary
 dct_teams = None
-
-# Retrieve key and host from terminal
-api_key = os.getenv('AF_KEY')
-api_host = os.getenv('AF_HOST')
 
 cl = Client(api_key, api_host)
 # Creates the client to the api with a country and season
@@ -77,15 +77,14 @@ for k, v in dct_teams.items():
 		print("Directory " , temp ,  " already exists")
 
 	# Saves current standings if the league is principal
-	if main == 'true':
+	if main == 'true' or main == 'false':
 		# Retrieving stats from team with key
 		home_stats, away_stats = af_cl.get_teams_stats(team=team_id, league=league, season=season)
 		# Update team standings
 		try:
 			team = standings[team_id]
 		except:
-			team = standings['13495']
-			print("Some error from the API")
+			print("The team: %s  was in the standings but not in the statistics" %(team_id))
 		team.stats_home = home_stats
 		team.stats_away = away_stats
 		# Save finish standings into a json  
