@@ -239,7 +239,7 @@ class APIFootball:
 		res = self.Client.conn.getresponse()
 		data = res.read()
 		fixtures = json.loads(data)
-		# List of id_fixtrure: id_home, id_against, name_home, name_against
+		# List of id_fixture: id_home, id_against, name_home, name_against
 		dct = {}
 		for match in fixtures["response"]:
 			id_f = match["fixture"]["id"]
@@ -303,7 +303,6 @@ class APIFootball:
 			dct[id_f] = football.Fixture(id_f, season, week, team_home, team_away, goals["home"], goals["away"])
 		return dct, fixtures["response"]
 
-
 	"""
 		Public method for getting the statistics in a given fixture
 		fixture: the id of the fixture
@@ -319,6 +318,11 @@ class APIFootball:
 		res = self.Client.conn.getresponse()
 		data = res.read()
 		statistics = json.loads(data)
+		try:
+			statistics["response"]
+		except:
+			print(fixture)
+			print(statistics)
 		# Dictionary of id_team : fixture object with statistics
 		dct = {}
 		for team in statistics["response"]:
@@ -335,6 +339,50 @@ class APIFootball:
 				self._set_to_object(lst_stats, lst_keys, stats)
 			dct[id_t] = stats
 		return dct, statistics["response"]
+
+	"""
+		Public method for getting the odds in a given league's season
+		league: the id of the league
+		season: the YYYY format of the season to search
+		bookmaker: the id of the bookmaker
+		bet: the id of the bet
+		fixture: the id of the fixture
+		date: the exact date as YYYY-MM-DD
+		Returns the ids of the theam and its statistics
+	"""
+	def get_odds(self, league, season, bookmaker='8', bet=None, fixture=None, date=None):
+		# Uses the default client season if not changed
+		endpoint = "/odds?league=" + league + '&season=' + season + '&bookmaker=' + bookmaker
+		if bet != None:
+			endpoint = endpoint + "&bet=" + bet
+		if fixture != None:
+			endpoint = endpoint + "&fixture=" + fixture
+		if date != None:
+			endpoint = endpoint + "&date=" + date
+		# Request to the API
+		self.Client.conn.request("GET", endpoint, headers=self.Client.headers)
+		res = self.Client.conn.getresponse()
+		data = res.read()
+		fixtures = json.loads(data)
+		print(fixtures)
+		# List of id_fixture: id_home, id_against, name_home, name_against
+		dct = {}
+		for odds in fixtures["response"]:
+			id_f = odds["fixture"]["id"]
+			id_l = odds["league"]["id"]
+			season = odds["league"]["season"]
+			odd = football.Odds(id_f, id_l, season, bookmaker)
+			for b in odds["bookmakers"][0]["bets"]:
+				if b["id"] == 1:
+					odd.winner_home = b["values"][0]["odd"]
+					odd.winner_draw = b["values"][1]["odd"]
+					odd.winner_away = b["values"][2]["odd"]
+				if b["id"] == 12:
+					odd.double_home_draw = b["values"][0]["odd"]
+					odd.double_home_away = b["values"][1]["odd"]
+					odd.double_away_draw = b["values"][2]["odd"]
+			dct[id_f] = odd
+		return dct, fixtures["response"]
 
 # A client for API-Football
 class Client:

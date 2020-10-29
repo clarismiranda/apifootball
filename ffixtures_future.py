@@ -43,11 +43,5 @@ for k, v in matches.items():
 	future_teams.append([home_team, away_team])
 	future_matches[match_id] = [home_team, away_team]
 
-print("Future teams:")
+print("Future teams %s:" % (country))
 print(future_teams)
-
-# Path for saving future games
-file_future = dirName + "next.json"
-# Writting future games into a file
-with open(file_future) as outfile:
-	outfile.write(future_matches)

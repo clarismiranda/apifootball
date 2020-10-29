@@ -43,7 +43,7 @@ export DIR_NAME="../PCA/"
 This saves the current standings in a league, if the league is already over saves the last week.\
 python fteam_stats.py --country --league --season --main
 ```bash
-python fteam_stats.py DE 78 2016 true\
+python fteam_stats.py DE 78 2016 true
 ```
 > Note: use true if it is the first time the standings are retrieved.
 
@@ -78,9 +78,27 @@ Here are several fixtures statistics commands of different leagues to be execute
 chmod +x ffixtures_stats.sh
 ```
 
+## Fixtures Odds
+This saves all the fixtures' odds of a given date and league season.
+python ffixtures_odds.py --league --season --week --date
+```bash
+python ffixtures_odds.py 78 2020 1 2020-09-18
+```
+
 ## Next Fixtures
 This ouputs a list of team's ids pairs, which are the teams' fixtures home and away teams in a given period of time.\
 python ffixtures_future.py --country --league --season --start --end
 ```bash
 python ffixtures_future.py DE 78 2016 2016-08-26 2016-08-30
+```
+
+## Automate Next Fixtures
+Here are several upcomming fixtures commands of different leagues to be executed by one command.\
+.\ffixtures_future.sh --season --start --end
+```bash
+./ffixtures_future.sh 2016 2016-08-26 2016-08-30
+```
+> Note: first mark the file as executable by running:
+```bash 
+chmod +x ffixtures_future.sh
 ```
