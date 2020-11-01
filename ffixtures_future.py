@@ -36,12 +36,15 @@ matches, _ = af_cl.get_fixtures(league, frm=start, to=end)
 # Output array of pair of teams in future matches
 future_teams = []
 future_matches = {}
+f_matches = []
 for k, v in matches.items():
 	match_id = str(k)
 	home_team = int(v.team_home.id)
 	away_team = int(v.team_away.id)
 	future_teams.append([home_team, away_team])
+	f_matches.append(int(match_id))
 	future_matches[match_id] = [home_team, away_team]
 
 print("Future teams %s:" % (country))
 print(future_teams)
+print(f_matches)

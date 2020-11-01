@@ -85,6 +85,17 @@ python ffixtures_odds.py --league --season --week --date
 python ffixtures_odds.py 78 2020 1 2020-09-18
 ```
 
+## Automate Fixtures Odds
+Here are several fixtures' odds commands of different leagues to be executed by one command.\
+.\ffixtures_odds.sh --season --date
+```bash
+./ffixtures_odds.sh 2020 2020-09-18
+```
+> Note: first mark the file as executable by running:
+```bash 
+chmod +x ffixtures_odds.sh
+```
+
 ## Next Fixtures
 This ouputs a list of team's ids pairs, which are the teams' fixtures home and away teams in a given period of time.\
 python ffixtures_future.py --country --league --season --start --end
@@ -93,7 +104,7 @@ python ffixtures_future.py DE 78 2016 2016-08-26 2016-08-30
 ```
 
 ## Automate Next Fixtures
-Here are several upcomming fixtures commands of different leagues to be executed by one command.\
+Here are several upcoming fixtures commands of different leagues to be executed by one command.\
 .\ffixtures_future.sh --season --start --end
 ```bash
 ./ffixtures_future.sh 2016 2016-08-26 2016-08-30
