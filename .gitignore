@@ -8,3 +8,6 @@ league.py
 
 # Github Cache
 .DS_Store
+
+# Odds updates
+ffixtures_odds.sh

@@ -69,13 +69,24 @@ python league.py --country --season
 
 ## Automate Fixtures Stats
 Here are several fixtures statistics commands of different leagues to be executed by one command.\
-.\ffixtures_stats.sh --season --end --start
+.\ffixtures_stats.sh --season --start --end
 ```bash
 ./ffixtures_stats.sh 2016 2016-08-26 2017-05-20
 ```
 > Note: first mark the file as executable by running:
 ```bash 
 chmod +x ffixtures_stats.sh
+```
+
+## Update Stats
+This updates statistics, fixtures and creates both datasets.\
+.\fupdate_stats.sh --season --start --end
+```bash
+./fupdate_stats.sh 2020 2020-11-05 2020-11-09
+```
+> Note: first mark the file as executable by running:
+```bash 
+chmod +x fupdate_stats.sh
 ```
 
 ## Fixtures Odds
