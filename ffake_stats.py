@@ -1,13 +1,14 @@
 """
-	Retrieves all team stats and saves them into folder
+	Inits first week with values in 0
 """
 
-from api.apifootball import APIFootball, Client, CustomEncoder
+from api.apifootball import CustomEncoder
+from api.football import Standings, Stats, Team, Streaks
 import json
 import os
 import sys
 
-if len(sys.argv) > 4:
+if len(sys.argv) > 3:
 	# Setting country, league and season from system arguments
 	# Main is a boolean to represent this league as principal
     country = sys.argv[1]
@@ -16,10 +17,6 @@ if len(sys.argv) > 4:
     main = sys.argv[4]
 else:
     print("Wrong arguments were given, expected: --country --league --season --main")
-
-# Retrieve key and host from terminal
-api_key = os.getenv('AF_KEY')
-api_host = os.getenv('AF_HOST')
 
 dirName = os.getenv('DIR_NAME') + country 
 
@@ -32,9 +29,13 @@ teams_json = dirName + '/teams.json'
 # Teams dictionary
 dct_teams = None
 
-cl = Client(api_key, api_host)
+# Retrieve key and host from terminal
+#api_key = os.getenv('AF_KEY')
+#api_host = os.getenv('AF_HOST')
+
+#cl = Client(api_key, api_host)
 # Creates the client to the api with a country and season
-af_cl = APIFootball(cl, country, season)
+#af_cl = APIFootball(cl, country, season)
 
 if main == 'true':
 	# Retrieving all teams in the league
@@ -46,9 +47,6 @@ if main == 'true':
 elif main == 'false':
 	with open(teams_json) as json_file:
 		dct_teams = json.load(json_file) 
-
-# Retrieving current standings from a league
-standings, _ = af_cl.get_standings(league)
 
 # When is not a main league, just create the folders 
 for k, v in dct_teams.items():
@@ -77,20 +75,23 @@ for k, v in dct_teams.items():
 		print("Directory " , temp ,  " already exists")
 
 	# Saves current standings if the league is principal
-	if main == 'true' or main == 'false':
+	if main == 'false':
 		# Retrieving stats from team with key
-		home_stats, away_stats = af_cl.get_teams_stats(team=team_id, league=league, season=season)
+		# home_stats, away_stats = af_cl.get_teams_stats(team=team_id, league=league, season=season)
+		# Empty home_stats, away_stats
+		streak = Streaks()
+		home_stats = Stats(streaks=streak)
+		away_stats = Stats(streaks=streak)
+		# Retrieving current standings from a league
+		team = Team(v["id"], v["name"])
+		standings = Standings(team)
 		# Update team standings
-		try:
-			team = standings[team_id]
-		except:
-			print("The team: %s  was in the standings but not in the statistics" %(team_id))
-		team.stats_home = home_stats
-		team.stats_away = away_stats
+		standings.stats_home = home_stats
+		standings.stats_away = away_stats
 		# Save finish standings into a json  
-		json_object = json.dumps(team, indent = 4, cls=CustomEncoder)
+		json_object = json.dumps(standings, indent = 4, cls=CustomEncoder)
 		# Games play
-		week = home_stats.played + away_stats.played
+		week = 1
 		# Saving into file
 		file = temp + '/' + team_id + '_' + str(week) + ".json"
 		with open(file, "w") as outfile: 

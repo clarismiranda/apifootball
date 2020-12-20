@@ -158,13 +158,14 @@ class Standings:
 		stats_away: a stats object from away matches
 	"""
 	def __init__(self, team=None, rank=0, points=0, goals_diff=0, form="", description="",
-				 stats_home=None, stats_away=None):
+				 group="", stats_home=None, stats_away=None):
 		self.team = team
 		self.rank = rank
 		self.points = points
 		self.goals_diff = goals_diff
 		self.form = form
 		self.description = description
+		self.group = group
 		self.stats_home = stats_home
 		self.stats_away = stats_away
 
@@ -237,6 +238,8 @@ class StatsFixture:
 class Fixture:
 	"""
 		id: the fixture id
+		season: the season it belongs
+		week: the match week
 		team_home: a team object representing home team
 		team_away: a team object representing away team
 		goals_home: an integer of goals scored by home team
@@ -244,8 +247,11 @@ class Fixture:
 		stats_home: a StatsFixture object about home team statistics
 		stats_away: a StatsFixture object about away team statistics
 	"""
-	def __init__(self, team_home, team_away, goals_home=0, goals_away=0,
+	def __init__(self, id_fixture, season, week, team_home, team_away, goals_home=0, goals_away=0,
 					stats_home=None, stats_away=None):
+		self.id = id_fixture
+		self.season = season
+		self.week = week
 		self.team_home = team_home
 		self.team_away = team_away
 		self.goals_home = goals_home
@@ -260,4 +266,42 @@ class Fixture:
 		output = "home team=%s away team=%s " % (self.team_home, self.team_away)
 		output += "goals_home=%s goals_away=%s " % (self.goals_home, self.goals_away)
 		output += "stats_home=%s stats_away=%s " % (self.stats_home, self.stats_away)
+		return output
+
+# A class for identifying odds in a league's fixture
+class Odds:
+	"""
+		id: the fixture's id
+		league: the league's id
+		season: the season it belongs
+		bookmaker: the id of the bookmaker
+		winner_home: odds for home win
+		winner_away: odds for away win
+		winner_draw: odds for match being a draw
+		double_home_away: odds for being a home or away win
+		double_home_draw: odds for being a home win or draw
+		double_away_draw: odds for being an away win or draw
+	"""
+	def __init__(self, id_fixture, league, season, bookmaker, winner_home=0, winner_away=0, 
+					winner_draw=0, double_home_away=0, double_home_draw=0, double_away_draw=0):
+		self.id = id_fixture
+		self.league = league
+		self.season = season
+		self.bookmaker = bookmaker
+		self.winner_home = winner_home
+		self.winner_away = winner_away
+		self.winner_draw = winner_draw
+		self.double_home_away = double_home_away
+		self.double_home_draw = double_home_draw
+		self.double_away_draw = double_away_draw
+
+	"""
+		Prints a Fixture object in string format
+	"""
+	def __str__(self):
+		output = "id=%s league=%s " % (self.id, self.league)
+		output += "season=%s bookmaker=%s " % (self.season, self.bookmaker)
+		output += "winner_home=%s winner_away=%s " % (self.winner_home, self.winner_away)
+		output += "winner_draw=%s home_away=%s " % (self.winner_draw, self.double_home_away)
+		output += "home_draw=%s away_draw=%s " % (self.double_home_draw, self.double_away_draw)
 		return output
