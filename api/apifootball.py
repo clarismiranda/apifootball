@@ -124,6 +124,8 @@ class APIFootball:
 			lst_away.append(value["away"])
 		for key, value in stats["goals"].items():
 			for k, v in value.items():
+				if k == "minute":
+					continue
 				# Everything from home matches
 				lst_home.append(float(v["home"]))
 				# Everything from away matches
